@@ -1,0 +1,19 @@
+<template>
+  <div class="mx-8">
+    <nuxt-link
+      to="/client/create">
+      Create Client
+    </nuxt-link>
+    <client-list/>
+  </div>
+</template>
+
+<script>
+import ClientList from '~/components/ClientList.vue'
+
+export default {
+  components: {
+    ClientList
+  }
+}
+</script>
