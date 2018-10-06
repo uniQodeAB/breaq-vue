@@ -1,10 +1,13 @@
 <template>
   <div class="h-full flex flex-col justify-center items-center">
-    <img
-      src="~/assets/logos/breaq-logo.png"
-      class="p-2 w-64" />
-
-    <google-sign-in-button class="mt-16"/>
+    <div class="flex flex-1 items-center">
+      <img
+        src="~/assets/logos/breaq-logo.png"
+        class="p-2 w-64" />
+    </div>
+    <div class="flex-1">
+      <google-sign-in-button class="mt-16"/>
+    </div>
 
     <!-- <a class="cursor-pointer m-32">
       <img
