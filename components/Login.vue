@@ -1,7 +1,18 @@
-<template lang="html">
-  <div>
-    <h1>Simple Auth Demo</h1>
-    <template v-if="user">
+<template>
+  <div class="h-full flex flex-col justify-center items-center">
+    <img
+      src="~/assets/logos/breaq-logo.png"
+      class="p-2 w-64" />
+
+    <google-sign-in-button class="mt-16"/>
+
+    <!-- <a class="cursor-pointer m-32">
+      <img
+        src="~/assets/img/btn_google_signin_light_normal_web.png"
+        alt="Sign in with Google"
+        class=""/>
+    </a> -->
+    <!-- <template v-if="user">
       <img
         :src="user.photoURL"
         alt="avatar"
@@ -10,14 +21,20 @@
     </template>
     <template v-if="!user">
       <button @click="signInWithGoogle">Sign in with Google</button>
-    </template>
+    </template> -->
   </div>
 </template>
 <script>
 import firebase from 'firebase'
 import { mapGetters } from 'vuex'
 
+import GoogleSignInButton from '~/components/GoogleSignInButton.vue'
+
 export default {
+
+  components: {
+    GoogleSignInButton
+  },
   data () {
     return {
       error: undefined
