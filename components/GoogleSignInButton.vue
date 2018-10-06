@@ -1,12 +1,14 @@
 <template>
   <div
-    class="m-4">
+    class="m-4"
+    @click="$emit('click')">
     <div class="button--google bg-white text-grey border appearance-none cursor-pointer outline-none overflow-hidden relative text-center align-middle whitespace-no-wrap">
       <a
         class="block flex items-center justify-between">
         <img
           alt="Google &quot;G&quot; Logo"
-          src="~/assets/logos/g-logo.svg"/>
+          src="~/assets/logos/g-logo.svg"
+        />
         <span class="text-sm text--google px-2">Sign in with Google</span>
       </a>
     </div>
