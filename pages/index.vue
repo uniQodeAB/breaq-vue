@@ -1,19 +1,12 @@
 <template>
-  <div class="mx-8">
-    <nuxt-link
-      to="/client/create">
-      Create Client
-    </nuxt-link>
-    <client-list/>
-  </div>
+  <div />
 </template>
 
 <script>
-import ClientList from '~/components/ClientList.vue'
 
 export default {
-  components: {
-    ClientList
+  mounted () {
+    this.$router.push('/dashboard')
   }
 }
 </script>

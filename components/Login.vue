@@ -36,13 +36,11 @@
 
         </div>
       </transition>
-
     </div>
   </div>
 </template>
 <script>
 import firebase from 'firebase'
-// import { mapGetters } from 'vuex'
 
 import GoogleSignInButton from '~/components/GoogleSignInButton.vue'
 
@@ -58,12 +56,6 @@ export default {
     }
   },
 
-  // computed: {
-  //   ...mapGetters({
-  //     user: 'auth/getUser'
-  //   })
-  // },
-
   methods: {
     async signInWithGoogle () {
       const provider = new firebase.auth.GoogleAuthProvider()
@@ -71,13 +63,14 @@ export default {
         const response = await firebase.auth().signInWithPopup(provider)
         this.user = response.user
         this.redirect()
+        this.$store.commit('auth/SET_USER', response.user)
       } catch (err) {
         console.log(err)
       }
     },
     async redirect () {
       setTimeout(() => {
-        this.$router.push('/')
+        this.$router.push('/dashboard')
       }, 5000)
     }
   }

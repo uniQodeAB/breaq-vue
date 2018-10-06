@@ -7,7 +7,7 @@
         v-for="client in clients"
         :key="client.id"
         class="px-4 py-2 block text-black hover:bg-grey-light"
-        @click="$router.push({ name: 'client-id', params: { id: client.id } })">
+        @click="$router.push({ name: 'dashboard-client-id', params: { id: client.id } })">
         {{ client.name }}
       </li>
     </ul>

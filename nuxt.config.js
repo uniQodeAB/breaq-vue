@@ -78,8 +78,5 @@ module.exports = {
         })
       }
     }
-  },
-  router: {
-    middleware: ['auth', 'redirect']
   }
 }
