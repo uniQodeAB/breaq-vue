@@ -14,23 +14,14 @@ export default {
     Login
   },
 
-  data () {
-    return {
-      bgImageId: null
-    }
-  },
-
   computed: {
     bgImage () {
+      const imageId = this.getRandomInt(9)
       const overlay = 'linear-gradient( rgba(0, 0, 0, 0.45),rgba(0, 0, 0, 0.45))'
       return {
-        background: `${overlay}, url(backgrounds/bg-${this.bgImageId}.jpg)`
+        background: `${overlay}, url(backgrounds/bg-${imageId}.jpg)`
       }
     }
-  },
-
-  created () {
-    this.bgImageId = this.getRandomInt(9)
   },
 
   methods: {
