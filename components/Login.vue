@@ -8,12 +8,27 @@
 
     <div
       class="flex-1">
+
       <transition
         name="fade"
         mode="out-in">
-        <google-sign-in-button
+        <div
           v-if="!user"
-          @click="signInWithGoogle" />
+          class="flex flex-col items-center">
+          <google-sign-in-button
+            v-if="!user"
+            @click="signInWithGoogle" />
+
+          <div
+            v-if="error"
+            class="bg-red-dark border border-red-darker p-4 rounded-sm w-64 text-center">
+            <span class="font-bold mb-2">
+              {{ error.message }}
+            </span>
+            <p>Contact the site administration if you think this is an error</p>
+          </div>
+
+        </div>
 
         <div
           v-else
@@ -41,6 +56,7 @@
 </template>
 <script>
 import firebase from 'firebase'
+import { db } from '~/plugins/vuefire'
 
 import GoogleSignInButton from '~/components/GoogleSignInButton.vue'
 
@@ -58,12 +74,18 @@ export default {
 
   methods: {
     async signInWithGoogle () {
+      this.error = null
       const provider = new firebase.auth.GoogleAuthProvider()
       try {
         const response = await firebase.auth().signInWithPopup(provider)
-        this.user = response.user
-        this.redirect()
-        this.$store.commit('auth/SET_USER', response.user)
+        const user = response.user
+        await this.isAuthorized(user)
+
+        if (!this.error) {
+          this.user = user
+          this.redirect()
+          this.$store.commit('auth/SET_USER', user)
+        }
       } catch (err) {
         console.log(err)
       }
@@ -72,6 +94,13 @@ export default {
       setTimeout(() => {
         this.$router.push('/dashboard')
       }, 5000)
+    },
+    async isAuthorized (user) {
+      try {
+        await db.collection('users').doc(user.uid).get()
+      } catch (e) {
+        this.error = e
+      }
     }
   }
 }

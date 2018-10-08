@@ -1,6 +1,7 @@
 <template>
   <div
-    class="m-4"
+    class="m-4 inline-block"
+    style="width: fit-content"
     @click="$emit('click')">
     <div class="button--google bg-white text-grey border appearance-none cursor-pointer outline-none overflow-hidden relative text-center align-middle whitespace-no-wrap">
       <a
