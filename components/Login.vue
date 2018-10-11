@@ -91,7 +91,8 @@ export default {
       }
     },
     async redirect () {
-      setTimeout(() => {
+      setTimeout(async () => {
+        await this.$store.dispatch('fetchProfile')
         this.$router.push('/dashboard')
       }, 5000)
     },
