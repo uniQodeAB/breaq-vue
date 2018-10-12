@@ -76,6 +76,9 @@ export default {
     async signInWithGoogle () {
       this.error = null
       const provider = new firebase.auth.GoogleAuthProvider()
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      })
       try {
         const response = await firebase.auth().signInWithPopup(provider)
         const user = response.user
@@ -84,7 +87,11 @@ export default {
         if (!this.error) {
           this.user = user
           this.redirect()
-          this.$store.commit('auth/SET_USER', user)
+          this.$store.commit('SET_USER', user)
+        } else {
+          firebase.auth().signOut()
+          this.$store.commit('SET_USER', null)
+          this.$store.commit('SET_PROFILE', null)
         }
       } catch (err) {
         console.log(err)

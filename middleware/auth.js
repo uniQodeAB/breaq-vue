@@ -1,7 +1,8 @@
-export default function ({ store, redirect, route }) {
-  if (route.path !== '/login') {
-    if (!store.getters['auth/userLoggedIn']) {
-      redirect('/login')
-    }
+const isAuthenticated = ({ getters }) => getters['isLoggedIn']
+const hasProfile = ({ getters }) => getters['hasProfile']
+
+export default async function ({ store, redirect, route }) {
+  if (!isAuthenticated(store) || !hasProfile) {
+    redirect('/login')
   }
 }
