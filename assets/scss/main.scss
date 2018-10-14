@@ -6,4 +6,16 @@ html, body, #__nuxt, #__layout {
   height: 100%;
 }
 
+.input {
+  @apply border border-grey-light rounded-sm p-2 text-grey-darkest;
+
+  &:disabled {
+    @apply bg-grey-lighter;
+  }
+}
+
+.label {
+  @apply font-semibold;
+}
+
 @tailwind utilities;

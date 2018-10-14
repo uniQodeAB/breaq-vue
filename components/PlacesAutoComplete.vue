@@ -2,8 +2,7 @@
   <input
     ref="autocomplete"
     placeholder="Search"
-    class="search-location appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-    onfocus="value = ''"
+    class="input"
     type="text" >
 </template>
 
@@ -12,11 +11,23 @@ import _ from 'lodash'
 
 export default {
 
+  props: {
+    value: {
+      type: Object,
+      default: () => ({ formattedAddress: '' })
+    }
+  },
+
+  watch: {
+    value () {
+      this.$refs.autocomplete.value = (this.value || { formattedAddress: '' }).formattedAddress
+    }
+  },
+
   mounted () {
     /* global google */
-
     const autocomplete = new google.maps.places.Autocomplete(
-      (this.$refs.autocomplete),
+      this.$refs.autocomplete,
       {types: ['geocode']}
     )
 
