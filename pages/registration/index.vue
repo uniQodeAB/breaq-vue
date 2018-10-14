@@ -100,14 +100,18 @@
       <modal
         :open="openSelectAddressModal"
         @close="openSelectAddressModal = false">
-
-        <ul>
-          <li
-            v-for="address in clientAddresses"
-            :key="address.id">
-            {{ address.formattedAddress }}
-          </li>
-        </ul>
+        <div v-if="selectedClient">
+          <h2>Select an address for {{ selectedClient.name }} </h2>
+          <ul class="list-reset">
+            <li
+              v-for="address in clientAddresses"
+              :key="address.id"
+              class="p-2 cursor-pointer hover:bg-blue-light hover:text-white"
+              @click="addressSelected(address)">
+              {{ address.formattedAddress }}
+            </li>
+          </ul>
+        </div>
       </modal>
     </portal>
   </div>
@@ -172,6 +176,11 @@ export default {
     async fetchClientAddresses () {
       const snapshots = await db.collection('clients').doc(this.selectedClient.id).collection('addresses').get()
       snapshots.forEach(doc => this.clientAddresses.push(doc.data()))
+    },
+
+    addressSelected (address) {
+      this.selectedAddress = address
+      this.openSelectAddressModal = false
     }
   }
 }
