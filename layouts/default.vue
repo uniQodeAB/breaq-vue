@@ -1,6 +1,6 @@
 <template>
   <div class="font-sans antialiased leading-tight h-full">
-    <div class="navbar" />
+    <breaq-navbar />
     <nuxt />
     <portal-target
       name="modals"
@@ -11,11 +11,13 @@
 
 <script>
 import { PortalTarget } from 'portal-vue'
+import BreaqNavbar from '~/components/Navbar.vue'
 
 export default {
 
   components: {
-    PortalTarget
+    PortalTarget,
+    BreaqNavbar
   }
 }
 </script>
