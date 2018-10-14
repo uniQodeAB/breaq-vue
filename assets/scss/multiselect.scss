@@ -3,10 +3,18 @@
 
   & .multiselect__tags {
     @apply p-2;
+
+    & .multiselect__input {
+      @apply outline-none ;
+    }
+
+    & .multiselect__single {
+      @apply block;
+    }
   }
 
   & .multiselect__content-wrapper {
-    @apply absolute bg-white border-r border-l border-b border-grey-light z-10 rounded-b-sm shadow-lg;
+    @apply absolute bg-white border-r border-l border-b border-grey-light z-10 rounded-b-sm shadow-lg w-full;
     width: calc(100% + 2px);
     left: -1px;
 
@@ -14,10 +22,14 @@
       @apply list-reset w-full;
 
       & .multiselect__element {
-        @apply px-2 py-1;
+        @apply w-full cursor-pointer;
+
+        .multiselect__option {
+          @apply block px-2 py-1;
+        }
 
         &:hover {
-          @apply cursor-pointer bg-blue-light text-white;
+          @apply bg-blue-light text-white;
         }
       }
     }
