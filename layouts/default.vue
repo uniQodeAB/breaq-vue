@@ -1,7 +1,7 @@
 <template>
   <div class="font-sans antialiased leading-tight h-full">
     <breaq-navbar />
-    <nuxt />
+    <nuxt class="mt-20"/>
     <portal-target
       name="modals"
       multiple>

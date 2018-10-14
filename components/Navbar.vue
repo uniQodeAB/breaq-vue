@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full bg-blue-lightest border-b border-blue-lighter shadow">
+  <div class="w-full bg-blue-lightest border-b border-blue-lighter shadow h-20 fixed pin-t z-10">
     <div class="flex justify-between mx-8 py-2">
       <nuxt-link to="/">
         <img
           src="~/assets/logos/breaq-logo.png"
-          class="navbar-img"/>
+          class="h-16"/>
       </nuxt-link>
 
       <div class="flex items-center">
@@ -15,7 +15,7 @@
         <img
           :src="user.photoURL"
           :alt="user.displayName"
-          class="navbar-img rounded-full">
+          class="h-16 rounded-full">
       </div>
     </div>
   </div>
@@ -31,10 +31,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-  .navbar-img {
-    width: 64px;
-    height: 64px;
-  }
-</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex">
-    <div class="flex flex-col w-full my-4 mx-16">
+    <div class="flex flex-col w-full mt-4 mx-16 mb-24">
       <div class="flex flex-row">
         <div class="flex flex-col flex-1 mx-2">
           <label
@@ -16,20 +16,6 @@
 
         <div class="flex flex-col flex-1 mx-2">
           <label
-            for="title"
-            class="label">Professional Title</label>
-          <input
-            v-model="form.title"
-            type="text"
-            name="title"
-            class="input mb-2"
-            placeholder="Professional title">
-        </div>
-      </div>
-
-      <div class="flex flex-row">
-        <div class="flex flex-col flex-1 mx-2">
-          <label
             for="email"
             class="label">Email</label>
           <input
@@ -38,6 +24,20 @@
             type="text"
             name="email"
             disabled="disabled">
+        </div>
+      </div>
+
+      <div class="flex flex-row">
+        <div class="flex flex-col flex-1 mx-2">
+          <label
+            for="title"
+            class="label">Professional Title</label>
+          <input
+            v-model="form.title"
+            type="text"
+            name="title"
+            class="input mb-2"
+            placeholder="Professional title">
         </div>
 
         <div class="flex flex-col flex-1 mx-2">
@@ -74,6 +74,7 @@
           class="label">Address</label>
         <places-auto-complete
           v-model="selectedAddress"
+          :disabled="!selectedClient"
           name="address"
           class="w-full mb-4"/>
       </div>
@@ -84,6 +85,14 @@
           :location="selectedAddress.location"
           style="height: 20em;"
           class="border border-grey-light rounded-sm" />
+      </div>
+    </div>
+
+    <div class="fixed w-full pin-b bg-grey-lightest border-t border-grey-light h-16">
+      <div class="flex justify-end items-center h-full">
+        <button class="border border-green-dark bg-green-lighter shadow-md p-2 mr-8 rounded-sm">
+          Complete profile
+        </button>
       </div>
     </div>
 
