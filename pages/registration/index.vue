@@ -88,9 +88,9 @@
       </div>
     </div>
 
-    <div class="fixed w-full pin-b bg-grey-lightest border-t border-grey-light h-16">
+    <div class="fixed w-full pin-b bg-grey-lightest border-t border-grey-light h-16 z-20">
       <div class="flex justify-end items-center h-full">
-        <button class="border border-green-dark bg-green-lighter shadow-md p-2 mr-8 rounded-sm">
+        <button class="border border-blue-dark bg-blue-light shadow-md p-2 mr-8 rounded-sm text-white shadow-md">
           Complete profile
         </button>
       </div>

@@ -1,0 +1,25 @@
+.multiselect {
+  @apply relative p-0;
+
+  & .multiselect__tags {
+    @apply p-2;
+  }
+
+  & .multiselect__content-wrapper {
+    @apply absolute bg-white border-r border-l border-b border-grey-light z-10 rounded-b-sm shadow-lg;
+    width: calc(100% + 2px);
+    left: -1px;
+
+    & .multiselect__content {
+      @apply list-reset w-full;
+
+      & .multiselect__element {
+        @apply px-2 py-1;
+
+        &:hover {
+          @apply cursor-pointer bg-blue-light text-white;
+        }
+      }
+    }
+  }
+}

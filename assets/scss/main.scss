@@ -18,4 +18,6 @@ html, body, #__nuxt, #__layout {
   @apply font-semibold;
 }
 
+@import 'multiselect';
+
 @tailwind utilities;
