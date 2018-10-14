@@ -28,7 +28,7 @@ export default {
 
     this.map = new google.maps.Map(this.$refs.gmap, {
       center: {lat: -34.397, lng: 150.644},
-      zoom: 8
+      zoom: 14
     })
 
     if (this.location) {
