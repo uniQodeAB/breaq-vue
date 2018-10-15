@@ -15,7 +15,7 @@ html, body, #__nuxt, #__layout {
 }
 
 .label {
-  @apply font-semibold;
+  @apply block uppercase tracking-wide text-grey-darker text-xs font-bold;
 }
 
 @import 'multiselect';
