@@ -18,6 +18,14 @@ html, body, #__nuxt, #__layout {
   @apply block uppercase tracking-wide text-grey-darker text-xs font-bold;
 }
 
+.button {
+  @apply p-2 uppercase border rounded-sm shadow;
+
+  &.button--blue {
+    @apply border-blue-dark bg-blue text-white;
+  }
+}
+
 @import 'multiselect';
 
 @tailwind utilities;

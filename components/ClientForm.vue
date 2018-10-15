@@ -29,11 +29,20 @@
       </div>
     </div>
 
-    <breaq-map
-      v-if="form.address"
-      :location="form.address.location"
-      style="height: 20em;"
-      class="border border-grey-light rounded-sm" />
+    <transition-expand>
+      <div v-if="form.address">
+        <breaq-map
+          :location="form.address.location"
+          style="height: 20em;"
+          class="border border-grey-light rounded-sm" />
+      </div>
+    </transition-expand>
+
+    <button
+      :disabled="disabled"
+      class="button button--blue">
+      Save client
+    </button>
   </form>
 
 </template>
@@ -41,11 +50,13 @@
 <script>
 import PlacesAutoComplete from '~/components/PlacesAutoComplete.vue'
 import BreaqMap from '~/components/Map.vue'
+import TransitionExpand from '~/components/TransitionExpand.vue'
 
 export default {
   components: {
     PlacesAutoComplete,
-    BreaqMap
+    BreaqMap,
+    TransitionExpand
   },
 
   props: ['client'],
@@ -56,6 +67,12 @@ export default {
         name: '',
         address: null
       }
+    }
+  },
+
+  computed: {
+    disabled () {
+      return !(this.form.name && this.form.address)
     }
   }
 }
