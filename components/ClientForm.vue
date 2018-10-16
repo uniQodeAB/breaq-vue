@@ -30,7 +30,9 @@
     </div>
 
     <transition-expand>
-      <div v-if="form.address">
+      <div
+        v-if="form.address"
+        class="mb-4">
         <breaq-map
           :location="form.address.location"
           style="height: 20em;"
@@ -38,11 +40,14 @@
       </div>
     </transition-expand>
 
-    <button
-      :disabled="disabled"
-      class="button button--blue">
-      Save client
-    </button>
+    <div class="flex justify-end">
+      <button
+        :disabled="disabled"
+        class="button button--blue"
+        @click.prevent="saveClient">
+        Save client
+      </button>
+    </div>
   </form>
 
 </template>
@@ -73,6 +78,13 @@ export default {
   computed: {
     disabled () {
       return !(this.form.name && this.form.address)
+    }
+  },
+
+  methods: {
+    saveClient () {
+      this.$emit('save', this.form)
+      this.$emit('close')
     }
   }
 }

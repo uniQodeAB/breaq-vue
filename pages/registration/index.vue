@@ -147,7 +147,11 @@ export default {
   },
 
   computed: {
-    ...mapState(['profile'])
+    ...mapState(['profile']),
+
+    isExistingClient () {
+      return this.selectedClient && this.selectedClient.id
+    }
   },
 
   firestore: {
@@ -162,12 +166,16 @@ export default {
     async onClientSelect () {
       this.clientAddresses = []
 
-      await this.fetchClientAddresses()
+      if (this.isExistingClient) {
+        await this.fetchClientAddresses()
 
-      if (this.clientAddresses.length === 1) {
-        this.selectedAddress = this.clientAddresses[0]
-      } else if (this.clientAddresses.length > 1) {
-        this.openSelectAddressModal = true
+        if (this.clientAddresses.length === 1) {
+          this.selectedAddress = this.clientAddresses[0]
+        } else if (this.clientAddresses.length > 1) {
+          this.openSelectAddressModal = true
+        }
+      } else {
+        this.selectedAddress = this.selectedClient.address
       }
     },
 

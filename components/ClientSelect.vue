@@ -29,7 +29,10 @@
     </multiselect>
     <portal to="modals">
       <modal :open="openForm">
-        <client-form :client="search" />
+        <client-form
+          :client="search"
+          @save="onClientSave"
+          @close="openForm = false" />
       </modal>
     </portal>
 
@@ -68,6 +71,10 @@ export default {
   methods: {
     handleSearch (search) {
       this.search = search
+    },
+    onClientSave (client) {
+      this.selectedClient = client
+      this.$emit('input', this.selectedClient)
     }
   }
 }

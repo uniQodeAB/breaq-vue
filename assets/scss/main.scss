@@ -23,6 +23,10 @@ html, body, #__nuxt, #__layout {
 
   &.button--blue {
     @apply border-blue-dark bg-blue text-white;
+
+    &:disabled {
+      @apply border-blue-light bg-grey-light text-grey-darker cursor-default;
+    }
   }
 }
 
