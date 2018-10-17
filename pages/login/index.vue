@@ -10,6 +10,8 @@
 import Login from '~/components/Login.vue'
 
 export default {
+  layout: 'empty',
+
   components: {
     Login
   },

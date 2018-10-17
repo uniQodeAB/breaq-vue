@@ -126,6 +126,7 @@ import ClientSelect from '~/components/ClientSelect.vue'
 
 export default {
   name: 'Registration',
+  layout: 'main',
 
   components: {
     PlacesAutoComplete,
