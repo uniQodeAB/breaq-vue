@@ -191,7 +191,7 @@ export default {
     },
 
     async onSubmit () {
-      await this.addClientLocation()
+      // await this.addClientLocation()
       await this.updateProfile()
     },
     async addClientLocation () {
@@ -205,7 +205,12 @@ export default {
       }
     },
     async updateProfile () {
-      db.collection('users').doc(this.profile.uid).update(this.form)
+      this.checkClientExists()
+      // db.collection('users').doc(this.profile.uid).update(this.form)
+    },
+    async checkClientExists () {
+      const response = await db.collection('clients').doc(this.selectedClient.id).get()
+      console.log(response.exists)
     }
   }
 }

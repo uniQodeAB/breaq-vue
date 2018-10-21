@@ -2,7 +2,7 @@
   <form
     class="w-full">
     <div class="flex flex-wrap mb-6">
-      <div class="w-full mb-6">
+      <div class="w-full mb-4">
         <label
           class="label"
           for="client-name">
@@ -14,6 +14,7 @@
           class="input w-full"
           type="text"
           placeholder="Client name">
+        <span class="text-red">{{ error }}&nbsp;</span>
       </div>
       <div class="w-full mb-2">
         <label
@@ -56,6 +57,7 @@
 import PlacesAutoComplete from '~/components/PlacesAutoComplete.vue'
 import BreaqMap from '~/components/Map.vue'
 import TransitionExpand from '~/components/TransitionExpand.vue'
+import { db } from '~/plugins/vuefire'
 
 export default {
   components: {
@@ -71,7 +73,8 @@ export default {
       form: {
         name: '',
         address: null
-      }
+      },
+      error: ''
     }
   },
 
@@ -82,9 +85,18 @@ export default {
   },
 
   methods: {
-    saveClient () {
-      this.$emit('save', this.form)
-      this.$emit('close')
+    async saveClient () {
+      if (await this.hasUniqueName()) {
+        this.$emit('save', this.form)
+        this.$emit('close')
+      } else {
+        this.error = 'A client with the same name already exists!'
+      }
+    },
+
+    async hasUniqueName () {
+      const clientRef = await db.collection('clients').where('name', '==', this.form.name).get()
+      return clientRef.empty || !clientRef.docs[0].exists
     }
   }
 }
