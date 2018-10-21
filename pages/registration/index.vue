@@ -3,7 +3,7 @@
     <div class="w-full flex">
 
       <div class="flex flex-col w-full mt-4 mx-16 mb-24">
-        <div class="flex flex-row">
+        <div class="flex flex-wrap">
           <div class="flex flex-col flex-1 mx-2">
             <label
               for="name"
@@ -123,6 +123,7 @@ import PlacesAutoComplete from '~/components/PlacesAutoComplete.vue'
 import Modal from '~/components/Modal.vue'
 import BreaqMap from '~/components/Map.vue'
 import ClientSelect from '~/components/ClientSelect.vue'
+import { firestore } from 'firebase'
 
 export default {
   name: 'Registration',
@@ -191,8 +192,12 @@ export default {
     },
 
     async onSubmit () {
-      // await this.addClientLocation()
-      await this.updateProfile()
+      try {
+        await this.updateProfile()
+        this.$router.push('/')
+      } catch (err) {
+        console.log(err)
+      }
     },
     async addClientLocation () {
       const snapshots = await db.collection('clients').doc(this.selectedClient.id).collection('addresses').get()
@@ -205,12 +210,55 @@ export default {
       }
     },
     async updateProfile () {
-      this.checkClientExists()
-      // db.collection('users').doc(this.profile.uid).update(this.form)
+      if (!this.isExistingClient) {
+        await this.addClientIfNew()
+      }
+
+      await this.addAddressIfNew()
+
+      const client = {
+        name: this.selectedClient.name,
+        id: this.selectedClient.id,
+        addressId: this.selectedAddress.id,
+        formattedAddress: this.selectedAddress.formattedAddress
+      }
+
+      const profileRef = db.collection('users').doc(this.profile.uid)
+      await profileRef.update({
+        ...this.form,
+        client,
+        isComplete: true,
+        updatedAt: firestore.FieldValue.serverTimestamp()
+      })
+
+      const profile = await profileRef.get()
+      console.log(profile.data())
     },
-    async checkClientExists () {
-      const response = await db.collection('clients').doc(this.selectedClient.id).get()
-      console.log(response.exists)
+    async addClientIfNew () {
+      const clientRef = await db.collection('clients').where('name', '==', this.selectedClient.name).get()
+      if (clientRef.empty) {
+        const docRef = db.collection('clients').doc()
+        await docRef.set({
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          id: docRef.id,
+          name: this.selectedClient.name
+        })
+
+        this.selectedClient.id = docRef.id
+      }
+    },
+
+    async addAddressIfNew () {
+      const addressCollection = db
+        .collection('clients')
+        .doc(this.selectedClient.id)
+        .collection('addresses')
+
+      const addressRef = await addressCollection.doc(this.selectedAddress.id)
+
+      if (!addressRef.exists) {
+        await addressRef.set(this.selectedAddress)
+      }
     }
   }
 }
