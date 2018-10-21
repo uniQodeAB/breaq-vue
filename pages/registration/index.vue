@@ -123,7 +123,6 @@ import PlacesAutoComplete from '~/components/PlacesAutoComplete.vue'
 import Modal from '~/components/Modal.vue'
 import BreaqMap from '~/components/Map.vue'
 import ClientSelect from '~/components/ClientSelect.vue'
-import { firestore } from 'firebase'
 
 export default {
   name: 'Registration',
@@ -199,16 +198,6 @@ export default {
         console.log(err)
       }
     },
-    async addClientLocation () {
-      const snapshots = await db.collection('clients').doc(this.selectedClient.id).collection('addresses').get()
-      const addresses = []
-      snapshots.forEach(doc => addresses.push(doc.data()))
-      const notExists = !addresses.find(address => address.id === this.selectedAddress.id)
-
-      if (notExists) {
-        db.collection('clients').doc(this.selectedClient.id).collection('addresses').add(this.selectedAddress)
-      }
-    },
     async updateProfile () {
       if (!this.isExistingClient) {
         await this.addClientIfNew()
@@ -230,29 +219,16 @@ export default {
       })
     },
     async addClientIfNew () {
-      const clientRef = await db.collection('clients').where('name', '==', this.selectedClient.name).get()
-      if (clientRef.empty) {
-        const docRef = db.collection('clients').doc()
-        await docRef.set({
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          id: docRef.id,
-          name: this.selectedClient.name
-        })
+      if (!(await this.$db.clientExists(this.selectedClient))) {
+        const id = await this.$db.createClient(this.selectedClient, this.selectedAddress)
 
-        this.selectedClient.id = docRef.id
+        this.selectedClient.id = id
       }
     },
 
     async addAddressIfNew () {
-      const addressCollection = db
-        .collection('clients')
-        .doc(this.selectedClient.id)
-        .collection('addresses')
-
-      const addressRef = await addressCollection.doc(this.selectedAddress.id)
-
-      if (!addressRef.exists) {
-        await addressRef.set(this.selectedAddress)
+      if (!(await this.$db.addressExists(this.selectedClient, this.selectedAddress))) {
+        await this.$db.addAddress(this.selectedClient, this.selectedAddress)
       }
     }
   }
