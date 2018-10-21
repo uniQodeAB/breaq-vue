@@ -232,7 +232,7 @@ export default {
       })
 
       const profile = await profileRef.get()
-      console.log(profile.data())
+      this.$store.commit('SET_PROFILE', profile.data())
     },
     async addClientIfNew () {
       const clientRef = await db.collection('clients').where('name', '==', this.selectedClient.name).get()
