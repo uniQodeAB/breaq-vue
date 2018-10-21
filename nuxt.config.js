@@ -50,7 +50,8 @@ module.exports = {
   */
   plugins: [
     '~/plugins/auth.js',
-    '~/plugins/vuefire.js'
+    '~/plugins/vuefire.js',
+    '~/plugins/db.js'
   ],
 
   /*

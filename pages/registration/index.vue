@@ -223,16 +223,11 @@ export default {
         formattedAddress: this.selectedAddress.formattedAddress
       }
 
-      const profileRef = db.collection('users').doc(this.profile.uid)
-      await profileRef.update({
+      await this.$db.updateProfile({
         ...this.form,
         client,
-        isComplete: true,
-        updatedAt: firestore.FieldValue.serverTimestamp()
+        isComplete: true
       })
-
-      const profile = await profileRef.get()
-      this.$store.commit('SET_PROFILE', profile.data())
     },
     async addClientIfNew () {
       const clientRef = await db.collection('clients').where('name', '==', this.selectedClient.name).get()
