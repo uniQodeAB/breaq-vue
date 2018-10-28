@@ -23,7 +23,7 @@ html, body, #__nuxt, #__layout {
 }
 
 .button {
-  @apply py-4 px-8 uppercase border border-dashed rounded-full cursor-pointer;
+  @apply py-3 px-8 uppercase border border-dashed rounded-full cursor-pointer;
 
   &.button--blue {
     @apply border-blue bg-blue text-white;

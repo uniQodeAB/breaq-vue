@@ -10,7 +10,7 @@
 
 <script>
 import AppFooter from '~/components/Footer.vue'
-import ProfileForm from '~/components/ProfileForm.vue'
+import ProfileForm from '~/components/profile/ProfileForm.vue'
 
 export default {
   name: 'Registration',

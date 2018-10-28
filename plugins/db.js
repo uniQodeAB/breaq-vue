@@ -1,14 +1,36 @@
 import Vue from 'vue'
 import { db } from '~/plugins/vuefire'
 import { firestore } from 'firebase'
+import _ from 'lodash'
 
 export default function ({ app, store }) {
   const $db = {
 
-    async updateProfile (data) {
+    async updateProfile ({ phoneNumber = '', expertise = '' }, currentClient = {}, currentClientAddress = {}) {
+      if (!_.isEmpty(currentClient)) {
+        const clientExists = await app.$db.clientExists(currentClient)
+
+        if (!clientExists) {
+          const id = await app.$db.createClient(currentClient, currentClientAddress)
+          currentClient.id = id
+        }
+      }
+
+      if (!_.isEmpty(currentClientAddress)) {
+        const addressExists = await app.$db.addressExists(currentClient, currentClientAddress)
+
+        if (!addressExists) {
+          await app.$db.addAddress(currentClient, currentClientAddress)
+        }
+      }
+
       const profileRef = db.collection('users').doc(store.state.profile.uid)
       await profileRef.update({
-        ...data,
+        phoneNumber,
+        expertise,
+        currentClient,
+        currentClientAddress,
+        isComplete: true,
         updatedAt: firestore.FieldValue.serverTimestamp()
       })
 
