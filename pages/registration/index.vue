@@ -102,16 +102,17 @@
               v-if="selectedAddress"
               :location="selectedAddress.location"
               style="height: 20em;"
-              class="border border-grey-light rounded-lg px-3 mb-8" />
+              class="border border-grey-light rounded-lg px-3 mb-24" />
           </div>
         </div>
       </div>
     </div>
-    <div class="w-full flex justify-center mb-4">
+
+    <app-footer>
       <button class="button button--blue px-16">
         Save
       </button>
-    </div>
+    </app-footer>
 
     <portal to="modals">
       <modal
@@ -142,6 +143,7 @@ import PlacesAutoComplete from '~/components/PlacesAutoComplete.vue'
 import Modal from '~/components/Modal.vue'
 import BreaqMap from '~/components/Map.vue'
 import ClientSelect from '~/components/ClientSelect.vue'
+import AppFooter from '~/components/Footer.vue'
 
 export default {
   name: 'Registration',
@@ -152,7 +154,8 @@ export default {
     Portal,
     Modal,
     BreaqMap,
-    ClientSelect
+    ClientSelect,
+    AppFooter
   },
 
   data () {
