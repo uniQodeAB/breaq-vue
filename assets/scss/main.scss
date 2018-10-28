@@ -2,27 +2,31 @@
 
 @tailwind components;
 
+@import url('https://fonts.googleapis.com/css?family=Muli');
+
 html, body, #__nuxt, #__layout {
   height: 100%;
+  font-family: 'Muli', sans-serif;
 }
 
 .input {
-  @apply border border-grey-light rounded-sm p-2 text-grey-darkest;
+  @apply border border-grey-light rounded-lg p-2 text-grey-darkest;
 
   &:disabled {
-    @apply bg-grey-lighter;
+    @apply text-grey border-grey-lighter;
+    background-color: rgba(178,193,202,0.2);
   }
 }
 
 .label {
-  @apply block uppercase tracking-wide text-grey-darker text-xs font-bold;
+  @apply block tracking-wide text-grey-darker;
 }
 
 .button {
-  @apply p-2 uppercase border rounded-sm shadow;
+  @apply py-4 px-8 uppercase border border-dashed rounded-full cursor-pointer;
 
   &.button--blue {
-    @apply border-blue-dark bg-blue text-white;
+    @apply border-blue bg-blue-light text-white;
 
     &:disabled {
       @apply border-blue-light bg-grey-light text-grey-darker cursor-default;
