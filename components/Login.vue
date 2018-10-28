@@ -99,10 +99,15 @@ export default {
     },
     async redirect () {
       setTimeout(async () => {
-        await this.$store.dispatch('fetchProfile')
-        this.$router.push('/dashboard')
+        try {
+          await this.$db.fetchProfile()
+          this.$router.push('/dashboard')
+        } catch (err) {
+          this.redirect()
+        }
       }, 5000)
     },
+
     async isAuthorized (user) {
       try {
         await db.collection('users').doc(user.uid).get()

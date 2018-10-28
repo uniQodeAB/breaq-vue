@@ -73,6 +73,23 @@ export default function ({ app, store }) {
 
       const addressRef = addressCollection.doc(address.id)
       await addressRef.set(address)
+    },
+
+    async fetchProfile () {
+      const user = store.getters['getUser']
+
+      try {
+        const profileRef = await db.collection('users').doc(user.uid).get()
+
+        if (profileRef.exists) {
+          store.commit('SET_PROFILE', profileRef.data())
+        } else {
+          throw new Error('Profile does not exist')
+        }
+      } catch (err) {
+        console.log('Error getting profile: ' + err)
+        throw err
+      }
     }
   }
 
