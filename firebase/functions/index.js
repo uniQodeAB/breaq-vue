@@ -7,18 +7,14 @@ const db = admin.firestore();
 db.settings({ timestampsInSnapshots: true })
 
 exports.onUserCreate = functions.auth.user().onCreate(user => {
-  const { uid, displayName, photoURL, phoneNumber, email } = user;
+  const { email } = user;
 
   return isValidDomain(email).then(value => {
     if (value && value[0]) {
       console.log(`${email} has a valid domain`)
-      return db.collection('users').doc(uid).set({
-        name: displayName,
-        photoURL,
-        uid,
-        phoneNumber: phoneNumber,
-        email: email
-      })
+
+      return createProfile(user)
+
     } else {
       console.log(`${email} has an invalid domain`)
       return false
@@ -38,5 +34,38 @@ isValidDomain = email => {
   }).catch(err => {
     console.log(err)
     return false;
+  })
+}
+
+getCompanyDomain = email => {
+  const matcher = email.match(/@(\w+)/)
+  return matcher && matcher[1]
+}
+
+fetchCompanyName = email => {
+  const domain = getCompanyDomain(email)
+
+  return db.collection('companies').doc(domain).get()
+    .then(doc => doc.data().name)
+    .catch(err => {
+      console.error(err)
+      return ''
+    })
+}
+
+createProfile = (user) => {
+  const { uid, displayName, photoURL, phoneNumber, email } = user;
+
+  return fetchCompanyName(email).then(company =>
+    db.collection('users').doc(uid).set({
+      name: displayName,
+      photoURL,
+      uid,
+      phoneNumber,
+      email,
+      company
+    })
+  ).catch(err => {
+    console.error(err)
   })
 }

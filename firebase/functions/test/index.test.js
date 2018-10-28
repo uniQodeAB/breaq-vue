@@ -23,7 +23,10 @@ describe('Cloud Functions', () => {
                 },
                 get () {
                   return Promise.resolve({
-                    data: () => ({ value: '.*@[test.com]' })
+                    data: () => ({
+                      value: '.*@[test.com]',
+                      name: 'Test Company Ltd'
+                    })
                   })
                 }
               }
@@ -63,7 +66,6 @@ describe('Cloud Functions', () => {
 
       onUserCreate(invalidUser)
 
-      // expect(firestoreSetSpy.called).to..be.rejected
     })
 
     it('should create a document in the users collection for a valid domain', (done) => {
@@ -81,7 +83,8 @@ describe('Cloud Functions', () => {
             email: validUser.email,
             phoneNumber: validUser.phoneNumber,
             photoURL: validUser.photoURL,
-            uid: validUser.uid
+            uid: validUser.uid,
+            company: 'Test Company Ltd'
           });
         } catch(err) {
           return done(err);
