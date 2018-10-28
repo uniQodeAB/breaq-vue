@@ -26,12 +26,16 @@ html, body, #__nuxt, #__layout {
   @apply py-4 px-8 uppercase border border-dashed rounded-full cursor-pointer;
 
   &.button--blue {
-    @apply border-blue bg-blue-light text-white;
+    @apply border-blue bg-blue text-white;
 
     &:disabled {
-      @apply border-blue-light bg-grey-light text-grey-darker cursor-default;
+      @apply border-blue bg-grey-light text-grey-darker cursor-default;
     }
   }
+}
+
+.heading {
+  @apply text-black font-normal uppercase text-3xl;
 }
 
 @import 'multiselect';

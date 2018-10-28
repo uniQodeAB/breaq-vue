@@ -54,8 +54,7 @@ let colors = {
   'grey-lightest': '#f8fafc',
   'white': '#ffffff',
 
-  'blue': '#55B1EB',
-  'blue-light': '#55B1EB'
+  'blue': '#55B1EB'
 }
 
 module.exports = {
@@ -446,6 +445,7 @@ module.exports = {
     '16': '4rem',
     '20': '5rem',
     '24': '6rem',
+    '28': '7rem',
     '32': '8rem',
     '48': '12rem',
     '64': '16rem',
@@ -603,6 +603,7 @@ module.exports = {
     '16': '4rem',
     '20': '5rem',
     '24': '6rem',
+    '28': '7rem',
     '32': '8rem'
   },
 

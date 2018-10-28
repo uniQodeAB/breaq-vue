@@ -96,18 +96,18 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap mb-32">
+        <div class="flex flex-wrap">
           <div class="w-full px-3">
             <breaq-map
               v-if="selectedAddress"
               :location="selectedAddress.location"
               style="height: 20em;"
-              class="border border-grey-light rounded-lg px-3" />
+              class="border border-grey-light rounded-lg px-3 mb-8" />
           </div>
         </div>
       </div>
     </div>
-    <div class="w-full flex justify-center mb-16">
+    <div class="w-full flex justify-center mb-4">
       <button class="button button--blue px-16">
         Save
       </button>
