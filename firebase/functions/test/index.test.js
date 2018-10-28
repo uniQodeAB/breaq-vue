@@ -23,7 +23,7 @@ describe('Cloud Functions', () => {
                 },
                 get () {
                   return Promise.resolve({
-                    data: () => ({ value: '@test.com' })
+                    data: () => ({ value: '.*@[test.com]' })
                   })
                 }
               }

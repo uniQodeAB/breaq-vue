@@ -10,7 +10,7 @@ exports.onUserCreate = functions.auth.user().onCreate(user => {
   const { uid, displayName, photoURL, phoneNumber, email } = user;
 
   return isValidDomain(email).then(value => {
-    if (value === true) {
+    if (value && value[0]) {
       console.log(`${email} has a valid domain`)
       return db.collection('users').doc(uid).set({
         name: displayName,
@@ -31,7 +31,10 @@ exports.onUserCreate = functions.auth.user().onCreate(user => {
 isValidDomain = email => {
   return db.collection('allowed-domain').doc('domain').get().then(doc => {
     const domain = doc.data().value;
-    return email.endsWith(domain);
+
+    const regex = new RegExp(domain)
+
+    return email.match(regex);
   }).catch(err => {
     console.log(err)
     return false;

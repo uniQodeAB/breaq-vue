@@ -3,13 +3,13 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if isSignedIn() && hasAllowedDomain();
     }
-    
+
     function isSignedIn() {
     	return request.auth != null;
     }
-    
+
     function hasAllowedDomain() {
-    	return request.auth.token.email.matches('.*@uniqode[.]se');
+    	return request.auth.token.email.matches(get(/databases/$(database)/documents/allowed-domain/domain).data.value);
     }
   }
 }
