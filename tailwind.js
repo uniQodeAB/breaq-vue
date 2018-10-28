@@ -54,7 +54,9 @@ let colors = {
   'grey-lightest': '#f8fafc',
   'white': '#ffffff',
 
-  'blue': '#55B1EB'
+  'blue': '#55B1EB',
+  'red': '#FF0000',
+  'red-light': '#FF7F7F'
 }
 
 module.exports = {

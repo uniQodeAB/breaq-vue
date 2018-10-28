@@ -21,7 +21,7 @@
 
           <div
             v-if="error"
-            class="bg-red-dark border border-red-darker p-4 rounded-sm w-64 text-center">
+            class="bg-red-light border-l-8 border-red p-4 rounded-lg w-64 text-center -ml-2">
             <span class="font-bold mb-2">
               {{ error.message }}
             </span>
