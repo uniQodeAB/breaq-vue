@@ -2,53 +2,77 @@
   <div
     id="map"
     ref="gmap"
-    class="w-full"></div>
+    class="w-full h-full"></div>
 </template>
 
 <script>
 export default {
-  props: ['location'],
+  props: {
+    markers: {
+      type: Array,
+      default: () => []
+    }
+  },
 
   data () {
     return {
       map: null,
-      markers: []
+      mapMarkers: []
     }
   },
 
+  // computed: {
+  //   mapMarkers () {
+  //     // this.clearMarkers()
+
+  //     return this.markers.map(marker => new google.maps.Marker({
+  //       position: marker.location,
+  //       map: this.map
+  //     }))
+  //   }
+  // },
+
   watch: {
-    location () {
-      this.clearMarkers()
-      this.addMarker()
+    markers: {
+      handler () {
+        this.clearMarkers()
+
+        this.mapMarkers = this.markers.map(marker => new google.maps.Marker({
+          position: marker.location,
+          map: this.map
+        }))
+
+        const centerMarker = this.markers.find(marker => marker.center)
+        if (centerMarker && this.map) {
+          this.map.setCenter(centerMarker.location)
+        }
+      },
+      immediate: true,
+      deep: true
     }
   },
 
   mounted () {
     /* global google */
-
     this.map = new google.maps.Map(this.$refs.gmap, {
       center: {lat: -34.397, lng: 150.644},
       zoom: 14
     })
-
-    if (this.location) {
-      this.addMarker()
-    }
   },
 
   methods: {
-    addMarker () {
-      this.markers.push(new google.maps.Marker({
-        position: this.location,
-        map: this.map
-      }))
+    // addMarker () {
+    //   this.markers.push(new google.maps.Marker({
+    //     position: this.location,
+    //     map: this.map
+    //   }))
 
-      this.map.setCenter(this.location)
-    },
+    //   this.map.setCenter(this.location)
+    // },
 
     clearMarkers () {
-      this.markers.forEach(marker => marker.setMap(null))
-      this.markers = []
+      this.mapMarkers.forEach(marker => marker.setMap(null))
+      this.mapMarkers = []
     }
   }
 

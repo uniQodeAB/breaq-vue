@@ -100,7 +100,10 @@
           <div class="w-full px-3">
             <breaq-map
               v-if="currentClientAddress"
-              :location="currentClientAddress.location"
+              :markers="[{
+                location: currentClientAddress.location,
+                center: true
+              }]"
               style="height: 20em;"
               class="border border-grey-light rounded-lg px-3 mb-24" />
           </div>

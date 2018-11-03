@@ -6,35 +6,41 @@ import _ from 'lodash'
 export default function ({ app, store }) {
   const $db = {
 
-    async updateProfile ({ phoneNumber = '', expertise = '' }, currentClient = {}, currentClientAddress = {}) {
-      if (!_.isEmpty(currentClient)) {
-        const clientExists = await app.$db.clientExists(currentClient)
+    async updateProfile ({ phoneNumber = '', expertise = '' }, newClient = {}, currentClientAddress = {}) {
+      if (!_.isEmpty(newClient)) {
+        const clientExists = await app.$db.clientExists(newClient)
 
         if (!clientExists) {
-          const id = await app.$db.createClient(currentClient, currentClientAddress)
-          currentClient.id = id
+          const id = await app.$db.createClient(newClient, currentClientAddress)
+          newClient.id = id
         }
       }
 
       if (!_.isEmpty(currentClientAddress)) {
-        const addressExists = await app.$db.addressExists(currentClient, currentClientAddress)
+        const addressExists = await app.$db.addressExists(newClient, currentClientAddress)
 
         if (!addressExists) {
-          await app.$db.addAddress(currentClient, currentClientAddress)
+          await app.$db.addAddress(newClient, currentClientAddress)
         }
       }
 
       const profileRef = db.collection('users').doc(store.state.profile.uid)
+
+      const currentProfile = await profileRef.get()
+      const currentClient = currentProfile.data().currentClient
+
       await profileRef.update({
         phoneNumber,
         expertise,
-        currentClient,
+        newClient,
         currentClientAddress,
         isComplete: true,
         updatedAt: firestore.FieldValue.serverTimestamp()
       })
 
       const profile = await profileRef.get()
+      await app.$db.updateClient(profile.data(), currentClient, newClient)
+
       store.commit('SET_PROFILE', profile.data())
     },
 
@@ -90,6 +96,56 @@ export default function ({ app, store }) {
         console.log('Error getting profile: ' + err)
         throw err
       }
+    },
+
+    async updateClient (profile, currentClient, newClient) {
+      if (currentClient.id !== newClient.id) {
+        await db.collection('clients')
+          .doc(currentClient.id)
+          .collection('consultants')
+          .doc(profile.uid)
+          .delete()
+      }
+
+      await db.collection('clients')
+        .doc(newClient.id)
+        .collection('consultants')
+        .doc(profile.uid)
+        .set({
+          name: profile.name,
+          company: profile.company,
+          currentClientAddress: profile.currentClientAddress,
+          uid: profile.uid
+        })
+    },
+
+    async fetchClients () {
+      const refs = await db.collection('clients').get()
+
+      const clients = []
+      refs.docs.forEach(async doc => {
+        const addresses = []
+        const consultants = []
+        const client = doc.data()
+
+        const addressesRefs = await doc.ref.collection('addresses').get()
+        addressesRefs.docs.forEach(addressDoc => {
+          addresses.push(addressDoc.data())
+        })
+
+        const consultantsRefs = await doc.ref.collection('consultants').get()
+        consultantsRefs.docs.forEach(consultantDoc => {
+          consultants.push(consultantDoc.data())
+        })
+
+        clients.push({
+          ...client,
+          addresses,
+          consultants
+        })
+      })
+
+      return clients
     }
   }
 
