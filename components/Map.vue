@@ -21,17 +21,6 @@ export default {
     }
   },
 
-  // computed: {
-  //   mapMarkers () {
-  //     // this.clearMarkers()
-
-  //     return this.markers.map(marker => new google.maps.Marker({
-  //       position: marker.location,
-  //       map: this.map
-  //     }))
-  //   }
-  // },
-
   watch: {
     markers: {
       handler () {
@@ -39,6 +28,12 @@ export default {
 
         this.mapMarkers = this.markers.map(marker => new google.maps.Marker({
           position: marker.location,
+          icon: {
+            url: marker.photoURL,
+            scaledSize: new google.maps.Size(32, 32),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(16, 16)
+          },
           map: this.map
         }))
 
@@ -58,18 +53,16 @@ export default {
       center: {lat: -34.397, lng: 150.644},
       zoom: 14
     })
+
+    var myoverlay = new google.maps.OverlayView()
+    myoverlay.draw = function () {
+      // this assigns an id to the markerlayer Pane, so it can be referenced by CSS
+      this.getPanes().markerLayer.id = 'markerLayer'
+    }
+    myoverlay.setMap(this.map)
   },
 
   methods: {
-    // addMarker () {
-    //   this.markers.push(new google.maps.Marker({
-    //     position: this.location,
-    //     map: this.map
-    //   }))
-
-    //   this.map.setCenter(this.location)
-    // },
-
     clearMarkers () {
       this.mapMarkers.forEach(marker => marker.setMap(null))
       this.mapMarkers = []

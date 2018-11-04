@@ -29,7 +29,8 @@ export default {
 
       return consultants.map(consultant => ({
         location: consultant.currentClientAddress.location,
-        center: true
+        center: true,
+        photoURL: consultant.photoURL
       }))
     }
   }

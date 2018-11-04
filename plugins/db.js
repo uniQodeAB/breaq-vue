@@ -6,21 +6,21 @@ import _ from 'lodash'
 export default function ({ app, store }) {
   const $db = {
 
-    async updateProfile ({ phoneNumber = '', expertise = '' }, newClient = {}, currentClientAddress = {}) {
+    async updateProfile ({ phoneNumber = '', expertise = '' }, newClient = {}, newClientAddress = {}) {
       if (!_.isEmpty(newClient)) {
         const clientExists = await app.$db.clientExists(newClient)
 
         if (!clientExists) {
-          const id = await app.$db.createClient(newClient, currentClientAddress)
+          const id = await app.$db.createClient(newClient, newClientAddress)
           newClient.id = id
         }
       }
 
-      if (!_.isEmpty(currentClientAddress)) {
-        const addressExists = await app.$db.addressExists(newClient, currentClientAddress)
+      if (!_.isEmpty(newClientAddress)) {
+        const addressExists = await app.$db.addressExists(newClient, newClientAddress)
 
         if (!addressExists) {
-          await app.$db.addAddress(newClient, currentClientAddress)
+          await app.$db.addAddress(newClient, newClientAddress)
         }
       }
 
@@ -32,8 +32,8 @@ export default function ({ app, store }) {
       await profileRef.update({
         phoneNumber,
         expertise,
-        newClient,
-        currentClientAddress,
+        client: newClient,
+        clientAddress: newClientAddress,
         isComplete: true,
         updatedAt: firestore.FieldValue.serverTimestamp()
       })
@@ -115,7 +115,8 @@ export default function ({ app, store }) {
           name: profile.name,
           company: profile.company,
           currentClientAddress: profile.currentClientAddress,
-          uid: profile.uid
+          uid: profile.uid,
+          photoURL: profile.photoURL
         })
     },
 

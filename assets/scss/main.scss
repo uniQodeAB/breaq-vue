@@ -38,6 +38,10 @@ html, body, #__nuxt, #__layout {
   @apply text-black font-normal uppercase text-3xl;
 }
 
+#markerLayer img {
+  @apply rounded-full border-2 border-black;
+}
+
 @import 'multiselect';
 
 @tailwind utilities;
