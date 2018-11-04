@@ -24,6 +24,31 @@ exports.onUserCreate = functions.auth.user().onCreate(user => {
   })
 })
 
+exports.onProfileUpdate = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(change => {
+
+    const profile = change.after.data()
+
+    const { name, company, client, clientAddress, uid, photoURL } = profile
+
+    return db.doc(`consultants/${profile.uid}`).get()
+    .then(docSnapshot => {
+
+      if (docSnapshot.exists) {
+        return docSnapshot.ref.update({
+          name, company, client, clientAddress, uid, photoURL,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        })
+      } else {
+        return docSnapshot.ref.set({
+          name, company, client, clientAddress, uid, photoURL,
+          createdAt: admin.firestore.FieldValue.serverTimestamp()
+        })
+      }
+    })
+})
+
 isValidDomain = email => {
   return db.collection('allowed-domain').doc('domain').get().then(doc => {
     const domain = doc.data().value;

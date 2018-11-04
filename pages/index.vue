@@ -6,42 +6,37 @@
 
 <script>
 import BreaqMap from '~/components/Map.vue'
+import { db } from '~/plugins/vuefire'
 
 export default {
   components: {
     BreaqMap
   },
 
-  async asyncData ({ app }) {
-    const clients = await app.$db.fetchClients()
-    return { clients }
+  data () {
+    return {
+      consultants: [],
+      loaded: false
+    }
   },
 
   computed: {
     markers () {
-      const consultants = []
-
-      this.clients.forEach(client => {
-        client.consultants.forEach(consultant => {
-          consultants.push(consultant)
-        })
-      })
-
-      return consultants.map(consultant => ({
-        location: consultant.currentClientAddress.location,
+      return !this.loaded ? [] : this.consultants.map(consultant => ({
+        location: consultant.clientAddress.location,
         center: true,
         photoURL: consultant.photoURL
       }))
     }
+  },
+
+  async mounted () {
+    try {
+      await this.$bind('consultants', db.collection('consultants'))
+      this.loaded = true
+    } catch (error) {
+      console.error('error in loading: ', error)
+    }
   }
-
-  // async mounted () {
-  //   const clients = await this.$db.fetchClients()
-
-  //   console.log(clients)
-  //   // clients.forEach(async client => {
-  //   //   const consultants = await this.
-  //   // })
-  // }
 }
 </script>

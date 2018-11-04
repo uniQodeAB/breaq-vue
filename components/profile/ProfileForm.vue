@@ -102,7 +102,8 @@
               v-if="currentClientAddress"
               :markers="[{
                 location: currentClientAddress.location,
-                center: true
+                center: true,
+                photoURL: profile.photoURL
               }]"
               style="height: 20em;"
               class="border border-grey-light rounded-lg px-3 mb-24" />

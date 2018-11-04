@@ -7,29 +7,11 @@ export default function ({ app, store }) {
   const $db = {
 
     async updateProfile ({ phoneNumber = '', expertise = '' }, newClient = {}, newClientAddress = {}) {
-      if (!_.isEmpty(newClient)) {
-        const clientExists = await app.$db.clientExists(newClient)
+      await app.$db.createClient(newClient, newClientAddress)
 
-        if (!clientExists) {
-          const id = await app.$db.createClient(newClient, newClientAddress)
-          newClient.id = id
-        }
-      }
+      const docSnapshot = db.doc(`users/${store.state.profile.uid}`)
 
-      if (!_.isEmpty(newClientAddress)) {
-        const addressExists = await app.$db.addressExists(newClient, newClientAddress)
-
-        if (!addressExists) {
-          await app.$db.addAddress(newClient, newClientAddress)
-        }
-      }
-
-      const profileRef = db.collection('users').doc(store.state.profile.uid)
-
-      const currentProfile = await profileRef.get()
-      const currentClient = currentProfile.data().currentClient
-
-      await profileRef.update({
+      await docSnapshot.update({
         phoneNumber,
         expertise,
         client: newClient,
@@ -38,47 +20,46 @@ export default function ({ app, store }) {
         updatedAt: firestore.FieldValue.serverTimestamp()
       })
 
-      const profile = await profileRef.get()
-      await app.$db.updateClient(profile.data(), currentClient, newClient)
-
+      const profile = await docSnapshot.get()
       store.commit('SET_PROFILE', profile.data())
     },
 
-    async clientExists (client) {
-      const clientRef = await db.collection('clients').where('name', '==', client.name).get()
-      return !clientRef.empty
-    },
-
     async createClient (client, address) {
-      const docRef = db.collection('clients').doc()
-      await docRef.set({
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        id: docRef.id,
-        name: client.name
-      })
+      const docSnapshot = await db.doc(`clients/${client.name}`).get()
 
-      client.id = docRef.id
-
-      if (address) {
-        await this.addAddress(client, address)
+      if (docSnapshot.exists) {
+        await docSnapshot.ref.update({
+          updatedAt: firestore.FieldValue.serverTimestamp(),
+          name: client.name,
+          id: client.name
+        })
+      } else {
+        await docSnapshot.ref.set({
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          id: client.name,
+          name: client.name
+        })
       }
 
-      return docRef.id
+      await this.createClientAddress(docSnapshot, address)
     },
 
-    async addressExists (client, address) {
-      const addressRef = await db.collection('clients').doc(client.id).collection('addresses').doc(address.id).get()
-      return addressRef.exists
-    },
+    async createClientAddress (clientSnapshot, address) {
+      if (_.isEmpty(address)) return
 
-    async addAddress (client, address) {
-      const addressCollection = db
-        .collection('clients')
-        .doc(client.id)
-        .collection('addresses')
+      const docSnapshot = await clientSnapshot.ref.collection('addresses').doc(address.id).get()
 
-      const addressRef = addressCollection.doc(address.id)
-      await addressRef.set(address)
+      if (docSnapshot.exists) {
+        await docSnapshot.ref.update({
+          ...address,
+          updatedAt: firestore.FieldValue.serverTimestamp()
+        })
+      } else {
+        await docSnapshot.ref.set({
+          ...address,
+          createdAt: firestore.FieldValue.serverTimestamp()
+        })
+      }
     },
 
     async fetchProfile () {
@@ -96,57 +77,6 @@ export default function ({ app, store }) {
         console.log('Error getting profile: ' + err)
         throw err
       }
-    },
-
-    async updateClient (profile, currentClient, newClient) {
-      if (currentClient.id !== newClient.id) {
-        await db.collection('clients')
-          .doc(currentClient.id)
-          .collection('consultants')
-          .doc(profile.uid)
-          .delete()
-      }
-
-      await db.collection('clients')
-        .doc(newClient.id)
-        .collection('consultants')
-        .doc(profile.uid)
-        .set({
-          name: profile.name,
-          company: profile.company,
-          currentClientAddress: profile.currentClientAddress,
-          uid: profile.uid,
-          photoURL: profile.photoURL
-        })
-    },
-
-    async fetchClients () {
-      const refs = await db.collection('clients').get()
-
-      const clients = []
-      refs.docs.forEach(async doc => {
-        const addresses = []
-        const consultants = []
-        const client = doc.data()
-
-        const addressesRefs = await doc.ref.collection('addresses').get()
-        addressesRefs.docs.forEach(addressDoc => {
-          addresses.push(addressDoc.data())
-        })
-
-        const consultantsRefs = await doc.ref.collection('consultants').get()
-        consultantsRefs.docs.forEach(consultantDoc => {
-          consultants.push(consultantDoc.data())
-        })
-
-        clients.push({
-          ...client,
-          addresses,
-          consultants
-        })
-      })
-
-      return clients
     }
   }
 
