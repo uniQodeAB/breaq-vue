@@ -75,10 +75,10 @@
           <div class="w-full md:w-1/2 px-3">
             <label
               for="clients"
-              class="label">Current Client
+              class="label">Current assignment
             </label>
             <client-select
-              v-model="currentClient"
+              v-model="client"
               :clients="clients"
               name="clients"
               @input="onClientSelect" />
@@ -89,8 +89,8 @@
               for="address"
               class="label">Address</label>
             <places-auto-complete
-              v-model="currentClientAddress"
-              :disabled="!currentClient"
+              v-model="clientAddress"
+              :disabled="!client"
               name="address"
               class="w-full"/>
           </div>
@@ -99,9 +99,9 @@
         <div class="flex flex-wrap">
           <div class="w-full px-3">
             <breaq-map
-              v-if="currentClientAddress"
+              v-if="clientAddress"
               :markers="[{
-                location: currentClientAddress.location,
+                location: clientAddress.location,
                 center: true,
                 photoURL: profile.photoURL
               }]"
@@ -120,7 +120,7 @@
         @close="openSelectAddressModal = false"
       >
         <address-selecter
-          :client="currentClient"
+          :client="client"
           :addresses="clientAddresses"
           @address-selected="onAddressSelect" />
       </modal>
@@ -155,8 +155,8 @@ export default {
         phoneNumber: null,
         expertise: null
       },
-      currentClient: null,
-      currentClientAddress: null,
+      client: null,
+      clientAddress: null,
       clients: [],
       clientAddresses: [],
       openSelectAddressModal: false
@@ -164,11 +164,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['profile']),
-
-    isExistingClient () {
-      return !!(this.currentClient && this.currentClient.id)
-    }
+    ...mapState(['profile'])
   },
 
   firestore: {
@@ -176,47 +172,50 @@ export default {
   },
 
   mounted () {
-    const { phoneNumber, expertise, currentClient, currentClientAddress } = this.profile
+    const { phoneNumber, expertise, client, clientAddress } = this.profile
 
     this.form = {
       phoneNumber,
       expertise
     }
 
-    this.currentClient = currentClient
-    this.currentClientAddress = currentClientAddress
+    this.client = client
+    this.clientAddress = clientAddress
   },
 
   methods: {
     async onClientSelect () {
       this.clientAddresses = []
 
-      if (this.isExistingClient) {
-        await this.fetchClientAddresses()
+      await this.fetchClientAddresses()
 
-        if (this.clientAddresses.length === 1) {
-          this.currentClientAddress = this.clientAddresses[0]
-        } else if (this.clientAddresses.length > 1) {
-          this.openSelectAddressModal = true
-        }
+      if (this.clientAddresses.length === 1) {
+        this.clientAddress = this.clientAddresses[0]
+      } else if (this.clientAddresses.length > 1) {
+        this.openSelectAddressModal = true
       } else {
-        this.currentClientAddress = this.currentClient.address
+        this.clientAddress = this.client.address
       }
     },
 
     async fetchClientAddresses () {
-      const snapshots = await db.collection('clients').doc(this.currentClient.id).collection('addresses').get()
-      snapshots.forEach(doc => this.clientAddresses.push(doc.data()))
+      const docSnapshot = await db.doc(`clients/${this.client.name}`).get()
+
+      if (docSnapshot.exists) {
+        const snapshots = await docSnapshot.ref.doc(this.client.id)
+          .collection('addresses').get()
+        snapshots.forEach(doc => this.clientAddresses.push(doc.data()))
+      }
     },
 
     onAddressSelect (address) {
-      this.currentClientAddress = address
+      this.clientAddress = address
       this.openSelectAddressModal = false
     },
 
     async onSubmit () {
       try {
-        await this.$db.updateProfile(this.form, this.currentClient, this.currentClientAddress)
+        await this.$db.updateProfile(this.form, this.client, this.clientAddress)
         this.$router.push('/')
       } catch (err) {
         console.error(err)

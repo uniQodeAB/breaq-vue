@@ -1,19 +1,63 @@
 <template>
   <div>
-    <multiselect
-      v-model="selectedClient"
+
+    <!-- v-model="selectedClient"
       :options="clients"
       :close-on-select="true"
       :clear-on-select="false"
       :allow-empty="false"
       :preserve-search="true"
+      :custom-label="nameWithLang"
       name="clients"
       placeholder="Select client"
       label="name"
       track-by="id"
       class="input mb-2"
       @input="$emit('input', selectedClient)"
+      @search-change="handleSearch"
+       -->
+    <multiselect
+      v-model="selectedClient"
+      :options="clients"
+      :multiple="false"
+      :searchable="true"
+      :loading="isLoading"
+      :clear-on-select="true"
+      :close-on-select="true"
+      :options-limit="300"
+      :max-height="600"
+      :show-no-results="true"
+      :hide-selected="true"
+      label="name"
+      track-by="name"
+      placeholder="Type to search"
+      open-direction="bottom"
+      class="input"
       @search-change="handleSearch">
+
+      <template
+        slot="tag"
+        slot-scope="{ option, remove }">
+        <span class="custom__tag">
+          <span>{{ option.name }}</span>
+          <span
+            class="custom__remove"
+            @click="remove(option)">❌
+          </span>
+        </span>
+      </template>
+
+      <template
+        slot="clear"
+        slot-scope="props">
+        <div
+          v-if="selectedClient"
+          class="multiselect__clear"
+          @mousedown.prevent.stop="clearAll(props.search)"></div>
+      </template>
+
+      <!-- <span slot="noResult">Oops! No elements found. Consider changing the search query.</span> -->
+
       <div
         slot="noResult"
         class="p-2">
@@ -30,7 +74,7 @@
     <portal to="modals">
       <modal :open="openForm">
         <client-form
-          :client="search"
+          :client="{ name: searchQuery }"
           @save="onClientSave"
           @close="openForm = false" />
       </modal>
@@ -58,23 +102,56 @@ export default {
 
   data () {
     return {
-      selectedClient: { },
+      selectedClient: null,
       openForm: false,
-      search: ''
+      searchQuery: '',
+      isLoading: false,
+      filteredClients: []
     }
   },
 
-  mounted () {
-    this.selectedClient = this.value
+  watch: {
+    value: {
+      handler () {
+        this.selectedClient = this.value
+      },
+      immediate: true
+    }
   },
 
   methods: {
-    handleSearch (search) {
-      this.search = search
-    },
+    // handleSearch (search) {
+    //   this.search = search
+    // },
     onClientSave (client) {
       this.selectedClient = client
       this.$emit('input', this.selectedClient)
+    },
+    // nameWithLang (client) {
+    //   console.log(client)
+
+    //   return 'foo'
+    // },
+    handleSearch (query) {
+      this.searchQuery = query
+      // this.isLoading = true
+
+      // return setTimeout(() => {
+      //   this.filteredClients = query ? this.clients.filter(client => {
+      //     const name = client.name.toUpperCase()
+      //     return name.includes(query.toUpperCase())
+      //   }) : []
+
+      //   this.isLoading = false
+      // })
+    },
+
+    remove () {
+
+    },
+
+    clearAll () {
+
     }
   }
 }
