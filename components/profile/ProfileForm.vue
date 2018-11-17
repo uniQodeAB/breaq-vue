@@ -187,7 +187,7 @@ export default {
     async onClientSelect () {
       this.clientAddresses = []
 
-      await this.fetchClientAddresses()
+      this.clientAddresses = await this.fetchClientAddresses()
 
       if (this.clientAddresses.length === 1) {
         this.clientAddress = this.clientAddresses[0]
@@ -199,13 +199,16 @@ export default {
     },
 
     async fetchClientAddresses () {
+      const addresses = []
+
       const docSnapshot = await db.doc(`clients/${this.client.name}`).get()
 
       if (docSnapshot.exists) {
-        const snapshots = await docSnapshot.ref.doc(this.client.id)
-          .collection('addresses').get()
-        snapshots.forEach(doc => this.clientAddresses.push(doc.data()))
+        const snapshots = await docSnapshot.ref.collection('addresses').get()
+        snapshots.forEach(doc => addresses.push(doc.data()))
       }
+
+      return addresses
     },
 
     onAddressSelect (address) {
