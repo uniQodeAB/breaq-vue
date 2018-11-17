@@ -15,7 +15,7 @@ install:
   - npm run generate
 
 script:
-  - echo "Skipping tests"
+  - echo "Skipping tests ok"
 
 deploy:
   provider: pages
