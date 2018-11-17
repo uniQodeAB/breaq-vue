@@ -1,21 +1,6 @@
 <template>
   <div>
 
-    <!-- v-model="selectedClient"
-      :options="clients"
-      :close-on-select="true"
-      :clear-on-select="false"
-      :allow-empty="false"
-      :preserve-search="true"
-      :custom-label="nameWithLang"
-      name="clients"
-      placeholder="Select client"
-      label="name"
-      track-by="id"
-      class="input mb-2"
-      @input="$emit('input', selectedClient)"
-      @search-change="handleSearch"
-       -->
     <multiselect
       v-model="selectedClient"
       :options="clients"
@@ -33,7 +18,8 @@
       placeholder="Type to search"
       open-direction="bottom"
       class="input"
-      @search-change="handleSearch">
+      @search-change="handleSearch"
+      @input="$emit('input', $event)">
 
       <template
         slot="tag"
@@ -55,8 +41,6 @@
           class="multiselect__clear"
           @mousedown.prevent.stop="clearAll(props.search)"></div>
       </template>
-
-      <!-- <span slot="noResult">Oops! No elements found. Consider changing the search query.</span> -->
 
       <div
         slot="noResult"
@@ -120,38 +104,12 @@ export default {
   },
 
   methods: {
-    // handleSearch (search) {
-    //   this.search = search
-    // },
     onClientSave (client) {
       this.selectedClient = client
       this.$emit('input', this.selectedClient)
     },
-    // nameWithLang (client) {
-    //   console.log(client)
-
-    //   return 'foo'
-    // },
     handleSearch (query) {
       this.searchQuery = query
-      // this.isLoading = true
-
-      // return setTimeout(() => {
-      //   this.filteredClients = query ? this.clients.filter(client => {
-      //     const name = client.name.toUpperCase()
-      //     return name.includes(query.toUpperCase())
-      //   }) : []
-
-      //   this.isLoading = false
-      // })
-    },
-
-    remove () {
-
-    },
-
-    clearAll () {
-
     }
   }
 }
