@@ -13,6 +13,8 @@ export default {
     BreaqMap
   },
 
+  middleware: ['auth', 'check-profile'],
+
   data () {
     return {
       consultants: [],
