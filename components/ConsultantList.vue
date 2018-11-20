@@ -31,7 +31,9 @@ export default {
 
   async mounted () {
     try {
-      await this.$bind('consultants', db.collection('consultants').orderBy('createdAt'))
+      await this.$bind('consultants', db.collection('consultants')
+        .orderBy('clientAddress')
+        .orderBy('createdAt'))
       this.loaded = true
       console.log(this.consultants)
     } catch (error) {
