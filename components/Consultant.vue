@@ -3,7 +3,7 @@
     <div class="flex pin-l pin-t">
       <img
         :src="consultant.photoURL"
-        class="h-12 rounded-full">
+        class="h-12 rounded-full mr-4">
     </div>
     <div class="flex-col pin-r pin-t mb-auto">
       <h1>
