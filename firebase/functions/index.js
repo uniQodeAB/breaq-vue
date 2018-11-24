@@ -30,19 +30,19 @@ exports.onProfileUpdate = functions.firestore
 
     const profile = change.after.data()
 
-    const { name, company, client, clientAddress, uid, photoURL } = profile
+    const { name, company, client, clientAddress, uid, photoURL, expertise, email, phoneNumber } = profile
 
     return db.doc(`consultants/${profile.uid}`).get()
     .then(docSnapshot => {
 
       if (docSnapshot.exists) {
         return docSnapshot.ref.update({
-          name, company, client, clientAddress, uid, photoURL,
+          name, company, client, clientAddress, uid, photoURL, expertise, email, phoneNumber,
           updatedAt: admin.firestore.FieldValue.serverTimestamp()
         })
       } else {
         return docSnapshot.ref.set({
-          name, company, client, clientAddress, uid, photoURL,
+          name, company, client, clientAddress, uid, photoURL, expertise, email, phoneNumber,
           createdAt: admin.firestore.FieldValue.serverTimestamp()
         })
       }
