@@ -3,7 +3,10 @@ const pkg = require('./package')
 
 module.exports = {
   mode: 'spa',
-
+  server: {
+    port: process.env.NUXT_PORT, // default: 3000
+    host: process.env.NUXT_HOST, // default: localhost
+  },
   /*
   ** Headers of the page
   */
