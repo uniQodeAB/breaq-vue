@@ -1,7 +1,7 @@
 <template>
   <div class="mx-8">
     <nuxt-link
-      to="dashboard/client/create">
+      to="/dashboard/client/create">
       Create Client
     </nuxt-link>
     <client-list/>
