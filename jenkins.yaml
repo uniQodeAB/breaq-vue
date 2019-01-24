@@ -1,0 +1,21 @@
+jenkins:
+  numExecutors: 2
+jobs:
+  - script: >
+     job('BreaQ') {
+      scm {
+        git('https://github.com/uniQodeAB/breaq-vue.git', '*/test-build-pipeline')
+      }
+      triggers {
+        scm('* * * * *')
+      }
+      steps {
+        shell('yarn install')
+        shell('yarn run build')
+        shell('cd functions')
+        shell('npm install')
+        shell('cd ..')
+        shell('sudo npm install -g eslint')
+        shell('firebase deploy --project breaq-uniqode')
+      }
+     }
