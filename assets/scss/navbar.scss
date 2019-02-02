@@ -1,5 +1,5 @@
 .navbar {
-  @apply border-b border-solid border-grey-light pb-1;
+  @apply border-b border-solid border-grey-light pb-1 bg-white;
 
   .main-nav {
     @apply list-reset;
@@ -18,9 +18,40 @@
     @apply inline-block mt-2 ml-4;
   }
 
-  .navbar-toggle {
+  .toggle {
     @apply absolute cursor-pointer text-grey-darker text-lg;
     top: 10px;
     right: 20px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .navbar {
+    @apply flex justify-between pb-0 items-center h-20;
+  }
+
+  .main-nav {
+    @apply flex mr-6 flex-row justify-end;
+
+    li {
+      @apply m-0;
+    }
+
+    .nav-link {
+      @apply ml-8;
+    }
+  }
+
+  .logo {
+    @apply mt-0;
+  }
+
+  .toggle {
+    @apply hidden;
+  }
+
+  .nav-link:hover,
+  .logo:hover {
+    @apply text-black;
   }
 }
