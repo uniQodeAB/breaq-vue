@@ -1,0 +1,20 @@
+language: node_js
+
+node_js:
+  - lts/*
+
+before_install:
+  - travis encrypt $FIREBASE_CI_TOKEN --add
+
+install:
+  - yarn install
+  - cd functions
+  - yarn install
+  - cd ..
+  - yarn build
+
+# before_deploy: "echo 'ready to deploy'"
+# deploy:
+#   provider: firebase
+#   token:
+#     secure: "YOUR ENCRYPTED token"
