@@ -1,14 +1,18 @@
 <template>
   <nav class="navbar">
-    <span class="navbar-toggle">
-      <i class="fas fa-bars"></i>
-    </span>
+    <navbar-toggle
+      class="toggle"
+      @toggle="active = !active"/>
 
-    <a
-      href="#"
-      class="logo">logo</a>
+    <nuxt-link
+      to="/"
+      class="logo">
+      Logo
+    </nuxt-link>
 
-    <ul class="main-nav">
+    <ul
+      :class="active ? 'sm:block' : 'sm:hidden'"
+      class="main-nav hidden md:flex">
       <li>
         <a
           href="#"
@@ -59,13 +63,20 @@
 
 <script>
 import ArrowLeft from '~/components/icons/ArrowLeft.vue'
-
+import NavbarToggle from '~/components/navbar/NavbarToggle.vue'
 import { mapState } from 'vuex'
 
 export default {
 
   components: {
-    ArrowLeft
+    ArrowLeft,
+    NavbarToggle
+  },
+
+  data () {
+    return {
+      active: false
+    }
   },
 
   computed: {

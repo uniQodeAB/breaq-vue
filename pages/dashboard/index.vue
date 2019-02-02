@@ -12,6 +12,8 @@
 import ClientList from '~/components/ClientList.vue'
 
 export default {
+  layout: 'main',
+
   middleware: ['auth', 'check-profile'],
   components: {
     ClientList
