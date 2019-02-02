@@ -16,53 +16,6 @@
       :paths="paths"
       :active="active"
       @navigate="active = false" />
-
-      <!-- <ul
-      :class="active ? 'sm:block' : 'sm:hidden'"
-      class="main-nav hidden md:flex"
-      @navigate="active = false">
-      <li>
-        <nav-link path="/">
-          Home
-        </nav-link>
-
-        <nuxt-link
-          to="/"
-          class="nav-link"
-          exact
-          @click.native="active = false">
-          Home
-        </nuxt-link>
-      </li>
-      <li>
-        <nuxt-link
-          to="/clients"
-          class="nav-link">
-          Clients
-        </nuxt-link>
-      </li>
-      <li>
-        <nuxt-link
-          to="/consultants"
-          class="nav-link">
-          Consultants
-        </nuxt-link>
-      </li>
-      <li>
-        <nuxt-link
-          to="/dashboard"
-          class="nav-link">
-          Dashboard
-        </nuxt-link>
-      </li>
-      <li>
-        <nuxt-link
-          to="/settings"
-          class="nav-link">
-          Settings
-        </nuxt-link>
-      </li>
-    </ul> -->
   </nav>
 </template>
 
