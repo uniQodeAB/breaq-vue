@@ -16,20 +16,21 @@
       <li>
         <nuxt-link
           to="/"
-          class="nav-link">
+          class="nav-link"
+          exact>
           Home
         </nuxt-link>
       </li>
       <li>
         <nuxt-link
-          to="/home/clients"
+          to="/clients"
           class="nav-link">
           Clients
         </nuxt-link>
       </li>
       <li>
         <nuxt-link
-          to="/home/consultants"
+          to="/consultants"
           class="nav-link">
           Consultants
         </nuxt-link>
