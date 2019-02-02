@@ -19,6 +19,8 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.7.1/css/solid.css', integrity: 'sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B', crossorigin: 'anonymous' },
+      { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.7.1/css/fontawesome.css', integrity: 'sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+', crossorigin: 'anonymous' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }
     ],
     script: [

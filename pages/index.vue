@@ -9,6 +9,8 @@ import BreaqMap from '~/components/Map.vue'
 import { db } from '~/plugins/vuefire'
 
 export default {
+  layout: 'main',
+
   components: {
     BreaqMap
   },

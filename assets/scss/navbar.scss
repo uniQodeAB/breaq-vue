@@ -1,0 +1,26 @@
+.navbar {
+  @apply border-b border-solid border-grey-light pb-1;
+
+  .main-nav {
+    @apply list-reset;
+
+    li {
+      @apply text-center my-2 mx-auto;
+    }
+  }
+
+  .nav-link,
+  .logo {
+    @apply no-underline text-grey-darker;
+  }
+
+  .logo {
+    @apply inline-block mt-2 ml-4;
+  }
+
+  .navbar-toggle {
+    @apply absolute cursor-pointer text-grey-darker text-lg;
+    top: 10px;
+    right: 20px;
+  }
+}
