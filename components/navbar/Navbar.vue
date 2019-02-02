@@ -41,6 +41,13 @@
           Dashboard
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link
+          to="/settings"
+          class="nav-link">
+          Settings
+        </nuxt-link>
+      </li>
     </ul>
   </nav>
 </template>
