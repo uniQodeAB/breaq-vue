@@ -6,6 +6,12 @@
 
     li {
       @apply text-center my-2 mx-auto;
+
+      .nav-link {
+        &.nuxt-link-active {
+          @apply font-semibold text-black;
+        }
+      }
     }
   }
 
