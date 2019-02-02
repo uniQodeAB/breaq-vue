@@ -17,5 +17,7 @@ deploy:
   token:
     secure: $FIREBASE_CI_TOKEN
   on:
-    all_branches: true
+    branch:
+      - master
+
   skip_cleanup: true
