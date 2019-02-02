@@ -7,17 +7,30 @@
     <nuxt-link
       to="/"
       class="logo">
-      <img src="~/assets/logos/breaq-logo.png" />
+      <img
+        src="~/assets/logos/breaq-logo.png"
+        alt="Breaq"/>
     </nuxt-link>
 
-    <ul
+    <main-nav
+      :paths="paths"
+      :active="active"
+      @navigate="active = false" />
+
+      <!-- <ul
       :class="active ? 'sm:block' : 'sm:hidden'"
-      class="main-nav hidden md:flex">
+      class="main-nav hidden md:flex"
+      @navigate="active = false">
       <li>
+        <nav-link path="/">
+          Home
+        </nav-link>
+
         <nuxt-link
           to="/"
           class="nav-link"
-          exact>
+          exact
+          @click.native="active = false">
           Home
         </nuxt-link>
       </li>
@@ -49,22 +62,31 @@
           Settings
         </nuxt-link>
       </li>
-    </ul>
+    </ul> -->
   </nav>
 </template>
 
 <script>
 import NavbarToggle from '~/components/navbar/NavbarToggle.vue'
+import MainNav from '~/components/navbar/MainNav.vue'
 
 export default {
 
   components: {
-    NavbarToggle
+    NavbarToggle,
+    MainNav
   },
 
   data () {
     return {
-      active: false
+      active: false,
+      paths: [
+        { name: 'Home', path: '/' },
+        { name: 'Clients', path: '/clients' },
+        { name: 'Consultants', path: '/consultants' },
+        { name: 'Dashboard', path: '/dashboard' },
+        { name: 'Settings', path: '/settings' }
+      ]
     }
   }
 }
