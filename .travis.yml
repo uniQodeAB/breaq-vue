@@ -10,6 +10,8 @@ install:
   - cd ..
   - yarn build
 
+script: true
+
 # before_deploy: "echo 'ready to deploy'"
 # deploy:
 #   provider: firebase
