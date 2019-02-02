@@ -22,6 +22,14 @@
 
   .logo {
     @apply inline-block mt-2 ml-4;
+
+    img {
+      @apply w-6 h-6;
+
+      @screen md {
+        @apply w-16 h-16;
+      }
+    }
   }
 
   .toggle {
@@ -50,6 +58,10 @@
 
   .logo {
     @apply mt-0;
+
+    img {
+      @apply w-16 h-16;
+    }
   }
 
   .toggle {

@@ -7,7 +7,7 @@
     <nuxt-link
       to="/"
       class="logo">
-      Logo
+      <img src="~/assets/logos/breaq-logo.png" />
     </nuxt-link>
 
     <ul
