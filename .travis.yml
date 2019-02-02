@@ -8,12 +8,11 @@ install:
   - cd functions
   - yarn install
   - cd ..
+
+script:
   - yarn build
 
-script: true
-
-# before_deploy: "echo 'ready to deploy'"
-# deploy:
-#   provider: firebase
-#   token:
-#     secure: "YOUR ENCRYPTED token"
+deploy:
+  provider: firebase
+  token:
+    secure: $FIREBASE_CI_TOKEN
