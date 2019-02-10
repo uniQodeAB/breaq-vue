@@ -1,7 +1,7 @@
 <template>
   <ul
-    :class="active ? 'sm:block' : 'sm:hidden'"
-    class="main-nav hidden md:flex">
+    :class="active ? 'sm:block' : 'hidden'"
+    class="main-nav md:flex">
     <li
       v-for="path in paths"
       :key="path.name">
