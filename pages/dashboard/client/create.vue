@@ -20,6 +20,7 @@
 import ClientForm from '~/components/ClientForm.vue'
 
 export default {
+  layout: 'main',
 
   components: {
     ClientForm
