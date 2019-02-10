@@ -13,8 +13,8 @@ import AppFooter from '~/components/Footer.vue'
 import ProfileForm from '~/components/profile/ProfileForm.vue'
 
 export default {
-  name: 'Registration',
   layout: 'main',
+  name: 'Registration',
 
   components: {
     AppFooter,

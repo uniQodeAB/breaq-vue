@@ -19,6 +19,7 @@ import { db } from '~/plugins/vuefire'
 import ClientForm from '~/components/ClientForm.vue'
 
 export default {
+  layout: 'main',
   name: 'EditClient',
 
   async asyncData ({ route }) {
